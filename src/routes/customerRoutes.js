@@ -10,7 +10,6 @@ const { protectCustomer } = require('../middleware/customerAuth');
 
 const router = express.Router();
 
-// Register
 router.post('/register', [
   body('name').notEmpty(),
   body('email').isEmail(),
@@ -18,13 +17,11 @@ router.post('/register', [
   body('phone').notEmpty()
 ], register);
 
-// Login
 router.post('/login', [
   body('email').isEmail(),
   body('password').notEmpty()
 ], login);
 
-// Protected
 router.get('/profile', protectCustomer, getProfile);
 router.put('/profile/address', protectCustomer, updateAddress);
 

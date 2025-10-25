@@ -11,14 +11,12 @@ const customerSchema = new mongoose.Schema({
   longitude: { type: Number, default: 77.2090 }
 }, { timestamps: true });
 
-// Hash password before save
 customerSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-// Compare password
 customerSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };

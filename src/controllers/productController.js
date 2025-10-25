@@ -30,7 +30,6 @@ exports.createProduct = async (req, res) => {
         .status(400)
         .json({ message: "Brand not found or not in your account" });
 
-    // Categories validation
     const cats = await Category.find({ _id: { $in: categoryIds } });
     if (cats.length !== categoryIds.length)
       return res
