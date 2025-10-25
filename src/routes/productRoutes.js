@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const { protectAdmin } = require('../middleware/auth');
-const { upload } = require('../config/cloudinary');
+const { upload } = require('../config/multer');
 const {
   createProduct,
   getAllProducts,
