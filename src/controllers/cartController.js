@@ -81,21 +81,26 @@ exports.updateItemQuantity = async (req, res) => {
     }
   };  
 
-exports.removeItem = async (req, res) => {
-  try {
-    const itemId = req.params.itemId;
-    const cart = await Cart.findOne({ customer: req.customer._id });
-    if (!cart) return res.status(404).json({ message: 'Cart not found' });
-
-    const item = cart.items.id(itemId);
-    if (!item) return res.status(404).json({ message: 'Cart item not found' });
-
-    item.remove();
-    cart.updatedAt = Date.now();
-    await cart.save();
-    res.json({ message: 'Item removed', cart });
-  } catch (err) { res.status(500).json({ message: err.message }); }
-};
+  exports.removeItem = async (req, res) => {
+    try {
+      const itemId = req.params.itemId;
+      const cart = await Cart.findOne({ customer: req.customer._id });
+      if (!cart) return res.status(404).json({ message: 'Cart not found' });
+  
+      const item = cart.items.id(itemId);
+      if (!item) return res.status(404).json({ message: 'Cart item not found' });
+  
+      cart.items = cart.items.filter(i => i._id.toString() !== itemId);
+  
+      cart.updatedAt = Date.now();
+      await cart.save();
+  
+      res.json({ message: 'Item removed', cart });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
 
 exports.clearCart = async (req, res) => {
   try {
